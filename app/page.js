@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Cinzel } from "next/font/google";
 import { useState, useEffect } from "react";
 
-const cinzel = Cinzel({ subsets: ["latin"], weight: "700" }); 
+const cinzel = Cinzel({ subsets: ["latin"], weight: "700" });
 
 export default function LandingPage() {
   const eventDate = new Date("2025-10-24T00:00:00"); // Event start date
@@ -79,14 +79,22 @@ export default function LandingPage() {
 
       <div className="relative z-10 flex items-center min-h-screen px-6 sm:px-12">
         <div className="text-left max-w-2xl mt-12 lg:ml-20">
-          {/* Subheading */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className={`text-xl sm:text-2xl md:text-3xl font-semibold bg-gradient-to-r from-indigo-400 via-white to-cyan-400 text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(150,200,255,0.8)] mb-4 ${cinzel.className}`}
+            className={`text-3xl sm:text-4xl md:text-5xl font-semibold bg-gradient-to-r from-indigo-400 via-white to-cyan-400 text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(150,200,255,0.8)] mb-2 ${cinzel.className}`}
           >
             Jesus Youth Vadodara
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className={`text-lg sm:text-xl md:text-2xl font-medium bg-gradient-to-r from-indigo-300 via-white to-cyan-300 text-transparent bg-clip-text drop-shadow-[0_0_15px_rgba(150,200,255,0.6)] mb-4 ${cinzel.className}`}
+          >
+            Presents An Initial Retreat
           </motion.p>
 
           {/* Title */}
@@ -149,7 +157,12 @@ export default function LandingPage() {
             className="mt-10"
           >
             <Link href="/register">
-              <button onClick={() => { window.localStorage.removeItem("Details") }} className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-indigo-500 to-cyan-600 text-white text-lg sm:text-xl font-semibold rounded-2xl shadow-lg hover:from-indigo-400 hover:to-cyan-500 hover:shadow-[0_0_25px_rgba(120,200,255,0.9)] transition-all">
+              <button
+                onClick={() => {
+                  window.localStorage.removeItem("Details");
+                }}
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-indigo-500 to-cyan-600 text-white text-lg sm:text-xl font-semibold rounded-2xl shadow-lg hover:from-indigo-400 hover:to-cyan-500 hover:shadow-[0_0_25px_rgba(120,200,255,0.9)] transition-all"
+              >
                 Register Now
               </button>
             </Link>
