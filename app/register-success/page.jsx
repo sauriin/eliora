@@ -3,7 +3,8 @@
 import { useSearchParams } from "next/navigation";
 import { useRef, useMemo } from "react";
 import { toPng } from "html-to-image";
-import PrayerCard from "./prayerCard";
+import PrayerCard from "./PrayerCard";
+import Image from "next/image";
 
 export default function RegisterSuccess() {
   const searchParams = useSearchParams();
@@ -83,7 +84,13 @@ export default function RegisterSuccess() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center py-10 space-y-6 bg-gray-100">
+    <div className="min-h-screen flex flex-col items-center justify-center py-10 space-y-6 bg-white-100">
+      <Image
+        src="/Images/image.png"
+        alt="Prayer Image"
+        width={500}
+        height={500}
+      />
       <h2 className="text-2xl font-semibold text-gray-800 text-center">
         You have taken one more step towards God!
       </h2>
