@@ -14,13 +14,14 @@ export const create = mutation({
     parishName: v.string(),
     travelWithUs: v.string(),
     paymentMethod: v.string(),
+    prayerIntention: v.optional(v.string()), // ✅ added field
   },
   handler: async (ctx, args) => {
     const result = await ctx.db.insert("registrations", {
       ...args,
       createdAt: Date.now(),
     });
-    return result._id; // return the ID of the newly created registration
+    return result._id;
   },
 });
 

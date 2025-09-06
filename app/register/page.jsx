@@ -79,6 +79,7 @@ export default function ElioraRegistration() {
                 parishName: formData.parishName,
                 travelWithUs: formData.travelWithUs,
                 paymentMethod,
+                prayerIntention: formData.prayerIntention || undefined,
             });
 
             // 🔹 Redirect to success page with data as query params
@@ -459,6 +460,20 @@ export default function ElioraRegistration() {
                         {submitError && (
                             <div className="text-red-600 text-sm">{submitError}</div>
                         )}
+                        {/* Prayer Intention */}
+                        <div className="space-y-2">
+                            <label htmlFor="prayerIntention" className="text-sm font-medium text-gray-900">
+                                Prayer Intention
+                            </label>
+                            <textarea
+                                id="prayerIntention"
+                                rows={3}
+                                placeholder="Share your prayer intentions"
+                                value={formData.prayerIntention || ""}
+                                onChange={(e) => handleInputChange("prayerIntention", e.target.value)}
+                                className="flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                        </div>
 
                         <div className="flex justify-end pt-6">
                             <button

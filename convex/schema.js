@@ -14,6 +14,7 @@ export default defineSchema({
     parishName: v.string(),
     travelWithUs: v.string(),
     paymentMethod: v.string(),
+    prayerIntention: v.optional(v.string()), // ✅ added field
     createdAt: v.number(),
   }),
 });
