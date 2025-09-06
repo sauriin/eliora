@@ -1,12 +1,13 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { useRef, useMemo, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { toPng } from "html-to-image";
 import PrayerCard from "./prayerCard";
 import Image from "next/image";
 
-export default function RegisterSuccess() {
+function RegisterSuccessContent() {
   const searchParams = useSearchParams();
   const cardRef = useRef(null);
   const [mounted, setMounted] = useState(false);
@@ -21,7 +22,11 @@ export default function RegisterSuccess() {
 
   if (!mounted) return null;
   if (!fullName || !gender) {
-    return <p className="min-h-screen flex items-center justify-center">Invalid access</p>;
+    return (
+      <p className="min-h-screen flex items-center justify-center">
+        Invalid access
+      </p>
+    );
   }
 
   const blessings = [
@@ -101,5 +106,13 @@ export default function RegisterSuccess() {
         Download Prayer Card
       </button>
     </div>
+  );
+}
+
+export default function RegisterSuccessPage() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <RegisterSuccessContent />
+    </Suspense>
   );
 }
