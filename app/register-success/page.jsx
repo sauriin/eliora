@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useRef, useMemo } from "react";
 import { toPng } from "html-to-image";
-import PrayerCard from "./PrayerCard";
+import PrayerCard from "./prayerCard";
 import Image from "next/image";
 
 export default function RegisterSuccess() {
