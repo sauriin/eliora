@@ -1,103 +1,161 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { Cinzel } from "next/font/google";
+import { useState, useEffect } from "react";
 
-export default function Home() {
+const cinzel = Cinzel({ subsets: ["latin"], weight: "700" }); 
+
+export default function LandingPage() {
+  const eventDate = new Date("2025-10-24T00:00:00"); // Event start date
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      const difference = eventDate.getTime() - now.getTime();
+
+      if (difference <= 0) {
+        clearInterval(timer);
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      } else {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / (1000 * 60)) % 60),
+          seconds: Math.floor((difference / 1000) % 60),
+        });
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <main className="relative min-h-screen w-full overflow-hidden">
+      {/* Mobile Background */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5 }}
+        className="sm:hidden absolute inset-0"
+      >
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
+          src="/eternal-phone.png"
+          alt="Eliora Retreat Mobile"
+          fill
           priority
+          className="object-cover scale-110 sm:scale-100"
         />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+      </motion.div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      {/* Desktop Background */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5 }}
+        className="hidden sm:block absolute inset-0"
+      >
+        <Image
+          src="/eternal.png"
+          alt="Eliora Retreat Desktop"
+          fill
+          priority
+          className="object-cover"
+        />
+      </motion.div>
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-blue-950/60" />
+
+      {/* Content */}
+
+      <div className="relative z-10 flex items-center min-h-screen px-6 sm:px-12">
+        <div className="text-left max-w-2xl mt-12 lg:ml-20">
+          {/* Subheading */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className={`text-xl sm:text-2xl md:text-3xl font-semibold bg-gradient-to-r from-indigo-400 via-white to-cyan-400 text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(150,200,255,0.8)] mb-4 ${cinzel.className}`}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Jesus Youth Vadodara
+          </motion.p>
+
+          {/* Title */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5 }}
+            className={`text-6xl sm:text-8xl md:text-9xl font-extrabold leading-tight ${cinzel.className}`}
           >
-            Read our docs
-          </a>
+            <span className="bg-gradient-to-r from-cyan-300 via-white to-cyan-300 text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(0,200,255,0.9)]">
+              ELIORA
+            </span>
+          </motion.h1>
+
+          {/* Countdown */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="mt-10 sm:mt-12"
+          >
+            <p className="text-white text-lg sm:text-xl font-semibold mb-4">
+              Countdown to Eliora
+            </p>
+            <div className="flex gap-3 sm:gap-6">
+              {/* Days */}
+              <div className="bg-white/90 text-blue-900 rounded-lg px-4 py-2 shadow-md">
+                <p className="text-xl sm:text-2xl font-bold">{timeLeft.days}</p>
+                <span className="text-sm">Days</span>
+              </div>
+              {/* Hours */}
+              <div className="bg-white/90 text-blue-900 rounded-lg px-4 py-2 shadow-md">
+                <p className="text-xl sm:text-2xl font-bold">
+                  {timeLeft.hours}
+                </p>
+                <span className="text-sm">Hours</span>
+              </div>
+              {/* Minutes */}
+              <div className="bg-white/90 text-blue-900 rounded-lg px-4 py-2 shadow-md">
+                <p className="text-xl sm:text-2xl font-bold">
+                  {timeLeft.minutes}
+                </p>
+                <span className="text-sm">Minutes</span>
+              </div>
+              {/* Seconds */}
+              <div className="bg-white/90 text-blue-900 rounded-lg px-4 py-2 shadow-md">
+                <p className="text-xl sm:text-2xl font-bold">
+                  {timeLeft.seconds}
+                </p>
+                <span className="text-sm">Seconds</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Button */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 1 }}
+            className="mt-10"
+          >
+            <Link href="/register">
+              <button onClick={() => { window.localStorage.removeItem("Details") }} className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-indigo-500 to-cyan-600 text-white text-lg sm:text-xl font-semibold rounded-2xl shadow-lg hover:from-indigo-400 hover:to-cyan-500 hover:shadow-[0_0_25px_rgba(120,200,255,0.9)] transition-all">
+                Register Now
+              </button>
+            </Link>
+          </motion.div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </main>
   );
 }
