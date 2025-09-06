@@ -1,28 +1,29 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { toPng } from "html-to-image";
-import PrayerCard from "./prayerCard"; // keep this unchanged
+import PrayerCard from "./prayerCard";
 import Image from "next/image";
 
 export default function RegisterSuccess() {
   const searchParams = useSearchParams();
+  const cardRef = useRef(null);
+  const [mounted, setMounted] = useState(false);
+
   const fullName = searchParams.get("fullName");
   const gender = searchParams.get("gender");
   const lifeStatus = searchParams.get("lifeStatus");
 
-  const cardRef = useRef(null);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
+  if (!mounted) return null;
   if (!fullName || !gender) {
-    return (
-      <p className="min-h-screen flex items-center justify-center">
-        Invalid access
-      </p>
-    );
+    return <p className="min-h-screen flex items-center justify-center">Invalid access</p>;
   }
 
-  // blessings and verses arrays
   const blessings = [
     `Dear God, may ${fullName}'s heart be filled with wonder and awe as they embark on this spiritual journey at Eliora. Guide them with Your wisdom and love, and may Your Word be a lamp unto their feet. May they walk in the light of Your truth and reflect Your love to others.`,
     `Heavenly Father, bless ${fullName} with courage and faith as they seek to deepen their relationship with You at Eliora. May Your presence be their guiding light, and may Your Word illuminate their path. May they trust in Your goodness and sovereignty.`,
@@ -54,15 +55,8 @@ export default function RegisterSuccess() {
     `“Draw near to God and he will draw near to you.” — James 4:8`,
   ];
 
-  const randomBlessing = useMemo(
-    () => blessings[Math.floor(Math.random() * blessings.length)],
-    [blessings]
-  );
-
-  const randomVerse = useMemo(
-    () => verses[Math.floor(Math.random() * verses.length)],
-    [verses]
-  );
+  const randomBlessing = blessings[Math.floor(Math.random() * blessings.length)];
+  const randomVerse = verses[Math.floor(Math.random() * verses.length)];
 
   const downloadCard = async () => {
     if (!cardRef.current) return;
@@ -72,7 +66,6 @@ export default function RegisterSuccess() {
         backgroundColor: "#ffffff",
         pixelRatio: 2,
       });
-
       const link = document.createElement("a");
       link.download = `${fullName}-eliora-prayer.png`;
       link.href = dataUrl;
@@ -83,13 +76,8 @@ export default function RegisterSuccess() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center py-10 space-y-6 bg-gray-100">
-      <Image
-        src="/Images/image.png"
-        alt="Prayer Image"
-        width={500}
-        height={500}
-      />
+    <div className="min-h-screen flex flex-col items-center justify-center py-10 space-y-6 bg-white">
+      <Image src="/Images/image.png" alt="Prayer Image" width={500} height={500} />
       <h2 className="text-2xl font-semibold text-gray-800 text-center">
         You have taken one more step towards God!
       </h2>
@@ -97,7 +85,6 @@ export default function RegisterSuccess() {
         Your registration was successful. Below is your personalized prayer card.
       </p>
 
-      {/* Prayer Card */}
       <PrayerCard
         ref={cardRef}
         fullName={fullName}
