@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useRef, useMemo } from "react";
 import { toPng } from "html-to-image";
-import PrayerCard from "./prayerCard";
+import PrayerCard from "./prayerCard"; // keep this unchanged
 import Image from "next/image";
 
 export default function RegisterSuccess() {
@@ -22,7 +22,7 @@ export default function RegisterSuccess() {
     );
   }
 
-  // List of blessings with dynamic [Name] replacement
+  // blessings and verses arrays
   const blessings = [
     `Dear God, may ${fullName}'s heart be filled with wonder and awe as they embark on this spiritual journey at Eliora. Guide them with Your wisdom and love, and may Your Word be a lamp unto their feet. May they walk in the light of Your truth and reflect Your love to others.`,
     `Heavenly Father, bless ${fullName} with courage and faith as they seek to deepen their relationship with You at Eliora. May Your presence be their guiding light, and may Your Word illuminate their path. May they trust in Your goodness and sovereignty.`,
@@ -41,7 +41,6 @@ export default function RegisterSuccess() {
     `Lord, may ${fullName} experience Your joy and peace in abundance as they journey through Eliora. May Your love be the foundation of their life, and may Your Word guide them every step of the way. May they reflect Your love and truth to others.`,
   ];
 
-  // List of verses
   const verses = [
     `“Your word is a lamp to my feet and a light to my path.” — Psalm 119:105`,
     `“For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.” — Jeremiah 29:11`,
@@ -84,7 +83,7 @@ export default function RegisterSuccess() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center py-10 space-y-6 bg-white-100">
+    <div className="min-h-screen flex flex-col items-center justify-center py-10 space-y-6 bg-gray-100">
       <Image
         src="/Images/image.png"
         alt="Prayer Image"
