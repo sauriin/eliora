@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "convex": "^1.26.2",
+    "file-saver": "^2.0.5",
     "framer-motion": "^12.23.12",
     "html-to-image": "^1.11.13",
     "next": "15.5.2",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

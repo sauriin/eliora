@@ -32,3 +32,9 @@ export const getRegistration = query({
     return registration || null;
   },
 });
+
+export const listAll = query({
+  handler: async (ctx) => {
+    return await ctx.db.query("registrations").order("desc").collect();
+  },
+});
