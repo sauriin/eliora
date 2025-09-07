@@ -1,16 +1,30 @@
-export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method not allowed" });
-  }
+// /app/api/auth/route.js
+import { NextResponse } from "next/server";
 
-  const { password } = req.body;
+export async function POST(req) {
+  try {
+    const { password } = await req.json();
 
-  // Compare with env variable
-  if (password === process.env.ADMIN_PASSWORD) {
-    return res.status(200).json({ success: true });
-  } else {
-    return res
-      .status(401)
-      .json({ success: false, message: "Incorrect password" });
+    if (!password) {
+      return NextResponse.json(
+        { success: false, message: "Password required" },
+        { status: 400 }
+      );
+    }
+
+    if (password === process.env.ADMIN_PASSWORD) {
+      return NextResponse.json({ success: true });
+    } else {
+      return NextResponse.json(
+        { success: false, message: "Incorrect password" },
+        { status: 401 }
+      );
+    }
+  } catch (err) {
+    console.error("Auth error:", err);
+    return NextResponse.json(
+      { success: false, message: "Something went wrong" },
+      { status: 500 }
+    );
   }
 }
