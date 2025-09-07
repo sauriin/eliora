@@ -2,15 +2,16 @@
 
 import { useState } from "react";
 import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { Eye, EyeOff } from "lucide-react";
+import { api } from "@/convex/_generated/api";
 
 export default function ParticipantsPage() {
     const [password, setPassword] = useState("");
     const [authenticated, setAuthenticated] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
-    // Filters
     const [activeFilters, setActiveFilters] = useState([]);
     const [filters, setFilters] = useState({
         search: "",
@@ -46,8 +47,6 @@ export default function ParticipantsPage() {
         }
     };
 
-
-
     if (!registrations) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -56,8 +55,9 @@ export default function ParticipantsPage() {
         );
     }
 
-    // Filtering
+    // Apply filters
     let filteredData = registrations;
+
     if (activeFilters.includes("search")) {
         filteredData = filteredData.filter(
             (r) =>
@@ -108,15 +108,27 @@ export default function ParticipantsPage() {
     if (!authenticated) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-                <div className="bg-white p-8 rounded-2xl shadow-lg w-96">
+                <div className="bg-white p-8 rounded-2xl shadow-lg w-96 relative">
                     <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">🔐 Admin Login</h2>
-                    <input
-                        type="password"
-                        placeholder="Enter password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4 focus:ring-2 focus:ring-indigo-500"
-                    />
+
+                    <div className="relative mb-4">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Enter password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full border border-gray-300 rounded-md px-3 py-2 pr-10 focus:ring-2 focus:ring-indigo-500"
+                        />
+                        {/* Show/Hide Icon */}
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700"
+                        >
+                            {showPassword ? <EyeOff size={20} /> : <Eye size={25} />}
+                        </button>
+                    </div>
+
                     <button
                         onClick={handleLogin}
                         className="w-full bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition"
@@ -179,10 +191,7 @@ export default function ParticipantsPage() {
                         setActiveFilters(activeFilters.filter((f) => f !== key));
                         setFilters((prev) => ({
                             ...prev,
-                            [key]:
-                                key === "dobRange" || key === "regDate"
-                                    ? { from: "", to: "" }
-                                    : "",
+                            [key]: key === "dobRange" || key === "regDate" ? { from: "", to: "" } : "",
                         }));
                     };
 
@@ -206,9 +215,7 @@ export default function ParticipantsPage() {
                                     type="text"
                                     placeholder="Search by name/email"
                                     value={filters.search}
-                                    onChange={(e) =>
-                                        setFilters((prev) => ({ ...prev, search: e.target.value }))
-                                    }
+                                    onChange={(e) => setFilters((prev) => ({ ...prev, search: e.target.value }))}
                                     className="border px-3 py-2 rounded-md shadow-sm"
                                 />
                             );
@@ -216,9 +223,7 @@ export default function ParticipantsPage() {
                             return wrapper(
                                 <select
                                     value={filters.gender}
-                                    onChange={(e) =>
-                                        setFilters((prev) => ({ ...prev, gender: e.target.value }))
-                                    }
+                                    onChange={(e) => setFilters((prev) => ({ ...prev, gender: e.target.value }))}
                                     className="border px-3 py-2 rounded-md shadow-sm"
                                 >
                                     <option value="">All Genders</option>
@@ -247,9 +252,7 @@ export default function ParticipantsPage() {
                                     type="text"
                                     placeholder="Filter by Parish"
                                     value={filters.parish}
-                                    onChange={(e) =>
-                                        setFilters((prev) => ({ ...prev, parish: e.target.value }))
-                                    }
+                                    onChange={(e) => setFilters((prev) => ({ ...prev, parish: e.target.value }))}
                                     className="border px-3 py-2 rounded-md shadow-sm"
                                 />
                             );
@@ -272,10 +275,7 @@ export default function ParticipantsPage() {
                                 <select
                                     value={filters.paymentMethod}
                                     onChange={(e) =>
-                                        setFilters((prev) => ({
-                                            ...prev,
-                                            paymentMethod: e.target.value,
-                                        }))
+                                        setFilters((prev) => ({ ...prev, paymentMethod: e.target.value }))
                                     }
                                     className="border px-3 py-2 rounded-md shadow-sm"
                                 >
@@ -363,7 +363,7 @@ export default function ParticipantsPage() {
                 ⬇ Download Excel
             </button>
 
-            {/* Table or Empty State */}
+            {/* Table */}
             {filteredData.length === 0 ? (
                 <div className="bg-white p-10 rounded-xl shadow-md text-center text-gray-500">
                     <p className="text-lg">No participants found.</p>

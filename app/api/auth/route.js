@@ -12,6 +12,7 @@ export async function POST(req) {
       );
     }
 
+    // Compare with environment variable
     if (password === process.env.ADMIN_PASSWORD) {
       return NextResponse.json({ success: true });
     } else {
