@@ -354,24 +354,28 @@ export default function ParticipantsPage() {
 
             {/* Table */}
             <div className="overflow-x-auto bg-white rounded-xl shadow-md">
-                <table className="w-full text-left border-collapse min-w-[600px] md:min-w-full">
+                <table className="w-full text-left border-collapse min-w-[800px] md:min-w-full">
                     <thead className="bg-gray-100 text-gray-700">
                         <tr>
                             <th className="border px-4 py-3">Name</th>
                             <th className="border px-4 py-3">Gender</th>
                             <th className="border px-4 py-3">Life Status</th>
-                            <th className="border px-4 py-3">Parish</th>
                             <th className="border px-4 py-3">DOB</th>
                             <th className="border px-4 py-3">WhatsApp</th>
-                            <th className="border px-4 py-3">Payment</th>
+                            <th className="border px-4 py-3">Emergency Contact</th>
+                            <th className="border px-4 py-3">Email</th>
+                            <th className="border px-4 py-3">Address</th>
+                            <th className="border px-4 py-3">Parish</th>
                             <th className="border px-4 py-3">Travel</th>
+                            <th className="border px-4 py-3">Payment</th>
+                            <th className="border px-4 py-3">Prayer Intention</th>
                             <th className="border px-4 py-3">Registered</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredData.length === 0 ? (
                             <tr>
-                                <td colSpan={9} className="border px-4 py-10 text-center text-gray-500">
+                                <td colSpan={13} className="border px-4 py-10 text-center text-gray-500">
                                     No participants found.
                                 </td>
                             </tr>
@@ -381,11 +385,15 @@ export default function ParticipantsPage() {
                                     <td className="border px-4 py-2">{r.fullName}</td>
                                     <td className="border px-4 py-2">{r.gender}</td>
                                     <td className="border px-4 py-2">{r.lifeStatus}</td>
-                                    <td className="border px-4 py-2">{r.parishName}</td>
                                     <td className="border px-4 py-2">{r.dateOfBirth}</td>
                                     <td className="border px-4 py-2">{r.whatsappNumber}</td>
-                                    <td className="border px-4 py-2 capitalize">{r.paymentMethod}</td>
+                                    <td className="border px-4 py-2">{r.emergencyContact}</td>
+                                    <td className="border px-4 py-2">{r.emailAddress}</td>
+                                    <td className="border px-4 py-2">{r.address || "-"}</td>
+                                    <td className="border px-4 py-2">{r.parishName}</td>
                                     <td className="border px-4 py-2">{r.travelWithUs}</td>
+                                    <td className="border px-4 py-2 capitalize">{r.paymentMethod}</td>
+                                    <td className="border px-4 py-2">{r.prayerIntention || "-"}</td>
                                     <td className="border px-4 py-2">{new Date(r.createdAt).toLocaleDateString()}</td>
                                 </tr>
                             ))
