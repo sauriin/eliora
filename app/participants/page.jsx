@@ -35,12 +35,8 @@ export default function ParticipantsPage() {
             });
 
             const data = await res.json();
-
-            if (data.success) {
-                setAuthenticated(true);
-            } else {
-                alert(data.message || "Incorrect password!");
-            }
+            if (data.success) setAuthenticated(true);
+            else alert(data.message || "Incorrect password!");
         } catch (err) {
             console.error("Login error:", err);
             alert("Something went wrong.");
@@ -107,8 +103,8 @@ export default function ParticipantsPage() {
 
     if (!authenticated) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-                <div className="bg-white p-8 rounded-2xl shadow-lg w-96 relative">
+            <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+                <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-md relative">
                     <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">🔐 Admin Login</h2>
 
                     <div className="relative mb-4">
@@ -119,13 +115,12 @@ export default function ParticipantsPage() {
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 pr-10 focus:ring-2 focus:ring-indigo-500"
                         />
-                        {/* Show/Hide Icon */}
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
                             className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700"
                         >
-                            {showPassword ? <EyeOff size={20} /> : <Eye size={25} />}
+                            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                         </button>
                     </div>
 
@@ -152,18 +147,18 @@ export default function ParticipantsPage() {
     ];
 
     return (
-        <div className="p-6 bg-gray-50 min-h-screen">
-            <div className="flex items-center justify-between mb-6">
-                <h1 className="text-3xl font-bold text-gray-800">📋 Participants</h1>
-                <div className="text-sm text-gray-600">
-                    <span className="mr-3">Total: {registrations.length}</span>
+        <div className="p-4 sm:p-6 md:p-8 bg-gray-50 min-h-screen">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4 md:gap-0">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">📋 Participants</h1>
+                <div className="text-sm text-gray-600 flex flex-wrap gap-3">
+                    <span>Total: {registrations.length}</span>
                     <span>Filtered: {filteredData.length}</span>
                 </div>
             </div>
 
             {/* Filter Selector */}
-            <div className="mb-6 flex items-center gap-3">
-                <label className="font-medium">➕ Add Filter:</label>
+            <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:gap-3">
+                <label className="font-medium mb-2 sm:mb-0">➕ Add Filter:</label>
                 <select
                     onChange={(e) => {
                         if (e.target.value && !activeFilters.includes(e.target.value)) {
@@ -171,7 +166,7 @@ export default function ParticipantsPage() {
                         }
                         e.target.value = "";
                     }}
-                    className="border px-3 py-2 rounded-md bg-white shadow-sm"
+                    className="border px-3 py-2 rounded-md bg-white shadow-sm w-full sm:w-auto"
                 >
                     <option value="">Select filter</option>
                     {availableFilters
@@ -196,7 +191,7 @@ export default function ParticipantsPage() {
                     };
 
                     const wrapper = (child) => (
-                        <div key={key} className="flex items-center gap-2">
+                        <div key={key} className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
                             {child}
                             <button
                                 type="button"
@@ -216,7 +211,7 @@ export default function ParticipantsPage() {
                                     placeholder="Search by name/email"
                                     value={filters.search}
                                     onChange={(e) => setFilters((prev) => ({ ...prev, search: e.target.value }))}
-                                    className="border px-3 py-2 rounded-md shadow-sm"
+                                    className="border px-3 py-2 rounded-md shadow-sm w-full sm:w-auto"
                                 />
                             );
                         case "gender":
@@ -235,9 +230,7 @@ export default function ParticipantsPage() {
                             return wrapper(
                                 <select
                                     value={filters.lifeStatus}
-                                    onChange={(e) =>
-                                        setFilters((prev) => ({ ...prev, lifeStatus: e.target.value }))
-                                    }
+                                    onChange={(e) => setFilters((prev) => ({ ...prev, lifeStatus: e.target.value }))}
                                     className="border px-3 py-2 rounded-md shadow-sm"
                                 >
                                     <option value="">All Life Status</option>
@@ -260,9 +253,7 @@ export default function ParticipantsPage() {
                             return wrapper(
                                 <select
                                     value={filters.travelWithUs}
-                                    onChange={(e) =>
-                                        setFilters((prev) => ({ ...prev, travelWithUs: e.target.value }))
-                                    }
+                                    onChange={(e) => setFilters((prev) => ({ ...prev, travelWithUs: e.target.value }))}
                                     className="border px-3 py-2 rounded-md shadow-sm"
                                 >
                                     <option value="">Travel With Us?</option>
@@ -274,9 +265,7 @@ export default function ParticipantsPage() {
                             return wrapper(
                                 <select
                                     value={filters.paymentMethod}
-                                    onChange={(e) =>
-                                        setFilters((prev) => ({ ...prev, paymentMethod: e.target.value }))
-                                    }
+                                    onChange={(e) => setFilters((prev) => ({ ...prev, paymentMethod: e.target.value }))}
                                     className="border px-3 py-2 rounded-md shadow-sm"
                                 >
                                     <option value="">All Payments</option>
@@ -286,7 +275,7 @@ export default function ParticipantsPage() {
                             );
                         case "dobRange":
                             return wrapper(
-                                <div className="flex gap-2 items-end">
+                                <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-end">
                                     <div>
                                         <label className="block text-xs text-gray-600">DOB From</label>
                                         <input
@@ -319,7 +308,7 @@ export default function ParticipantsPage() {
                             );
                         case "regDate":
                             return wrapper(
-                                <div className="flex gap-2 items-end">
+                                <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-end">
                                     <div>
                                         <label className="block text-xs text-gray-600">Reg From</label>
                                         <input
@@ -364,29 +353,30 @@ export default function ParticipantsPage() {
             </button>
 
             {/* Table */}
-            {filteredData.length === 0 ? (
-                <div className="bg-white p-10 rounded-xl shadow-md text-center text-gray-500">
-                    <p className="text-lg">No participants found.</p>
-                    <p className="text-sm mt-2">Try removing some filters to see more records.</p>
-                </div>
-            ) : (
-                <div className="overflow-x-auto bg-white rounded-xl shadow-md">
-                    <table className="w-full text-left border-collapse">
-                        <thead className="bg-gray-100 text-gray-700">
+            <div className="overflow-x-auto bg-white rounded-xl shadow-md">
+                <table className="w-full text-left border-collapse min-w-[600px] md:min-w-full">
+                    <thead className="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th className="border px-4 py-3">Name</th>
+                            <th className="border px-4 py-3">Gender</th>
+                            <th className="border px-4 py-3">Life Status</th>
+                            <th className="border px-4 py-3">Parish</th>
+                            <th className="border px-4 py-3">DOB</th>
+                            <th className="border px-4 py-3">WhatsApp</th>
+                            <th className="border px-4 py-3">Payment</th>
+                            <th className="border px-4 py-3">Travel</th>
+                            <th className="border px-4 py-3">Registered</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredData.length === 0 ? (
                             <tr>
-                                <th className="border px-4 py-3">Name</th>
-                                <th className="border px-4 py-3">Gender</th>
-                                <th className="border px-4 py-3">Life Status</th>
-                                <th className="border px-4 py-3">Parish</th>
-                                <th className="border px-4 py-3">DOB</th>
-                                <th className="border px-4 py-3">WhatsApp</th>
-                                <th className="border px-4 py-3">Payment</th>
-                                <th className="border px-4 py-3">Travel</th>
-                                <th className="border px-4 py-3">Registered</th>
+                                <td colSpan={9} className="border px-4 py-10 text-center text-gray-500">
+                                    No participants found.
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {filteredData.map((r) => (
+                        ) : (
+                            filteredData.map((r) => (
                                 <tr key={r._id} className="hover:bg-gray-50">
                                     <td className="border px-4 py-2">{r.fullName}</td>
                                     <td className="border px-4 py-2">{r.gender}</td>
@@ -396,15 +386,13 @@ export default function ParticipantsPage() {
                                     <td className="border px-4 py-2">{r.whatsappNumber}</td>
                                     <td className="border px-4 py-2 capitalize">{r.paymentMethod}</td>
                                     <td className="border px-4 py-2">{r.travelWithUs}</td>
-                                    <td className="border px-4 py-2">
-                                        {new Date(r.createdAt).toLocaleDateString()}
-                                    </td>
+                                    <td className="border px-4 py-2">{new Date(r.createdAt).toLocaleDateString()}</td>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            )}
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
