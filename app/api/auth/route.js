@@ -1,9 +1,16 @@
-export async function POST(req) {
-  const { password } = await req.json();
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
+  }
 
+  const { password } = req.body;
+
+  // Compare with env variable
   if (password === process.env.ADMIN_PASSWORD) {
-    return Response.json({ success: true });
+    return res.status(200).json({ success: true });
   } else {
-    return Response.json({ success: false }, { status: 401 });
+    return res
+      .status(401)
+      .json({ success: false, message: "Incorrect password" });
   }
 }

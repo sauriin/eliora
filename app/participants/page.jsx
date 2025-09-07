@@ -33,10 +33,12 @@ export default function ParticipantsPage() {
                 body: JSON.stringify({ password }),
             });
 
-            if (res.ok) {
+            const data = await res.json();
+
+            if (data.success) {
                 setAuthenticated(true);
             } else {
-                alert("Incorrect password!");
+                alert(data.message || "Incorrect password!");
             }
         } catch (err) {
             console.error("Login error:", err);
