@@ -116,7 +116,7 @@ export default function ElioraRegistration() {
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                         backgroundRepeat: "no-repeat",
-                        aspectRatio: "1728 / 470",
+                        aspectRatio: "1720 / 440",
                     }}
                 />
             </div>
