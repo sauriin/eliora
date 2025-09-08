@@ -33,7 +33,7 @@ const PrayerCard = forwardRef(
 
           {/* Blessing */}
           <p className="text-[14px] leading-[1.4] text-yellow-100 drop-shadow-md  break-words">
-            Dear {fullName}, {blessing}
+            {blessing}
           </p>
 
           {/* Verse */}
