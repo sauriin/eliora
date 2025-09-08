@@ -18,7 +18,6 @@ export default function ParticipantsPage() {
         gender: "",
         lifeStatus: "",
         parish: "",
-        travelWithUs: "",
         paymentMethod: "",
         dobRange: { from: "", to: "" },
         regDate: { from: "", to: "" },
@@ -71,9 +70,6 @@ export default function ParticipantsPage() {
         filteredData = filteredData.filter((r) =>
             r.parishName?.toLowerCase().includes(filters.parish.toLowerCase())
         );
-    }
-    if (activeFilters.includes("travelWithUs") && filters.travelWithUs) {
-        filteredData = filteredData.filter((r) => r.travelWithUs === filters.travelWithUs);
     }
     if (activeFilters.includes("paymentMethod") && filters.paymentMethod) {
         filteredData = filteredData.filter((r) => r.paymentMethod === filters.paymentMethod);
@@ -140,7 +136,6 @@ export default function ParticipantsPage() {
         { key: "gender", label: "Gender" },
         { key: "lifeStatus", label: "Life Status" },
         { key: "parish", label: "Parish" },
-        { key: "travelWithUs", label: "Travel With Us" },
         { key: "paymentMethod", label: "Payment Method" },
         { key: "dobRange", label: "Date of Birth Range" },
         { key: "regDate", label: "Registration Date Range" },
@@ -249,18 +244,6 @@ export default function ParticipantsPage() {
                                     className="border px-3 py-2 rounded-md shadow-sm"
                                 />
                             );
-                        case "travelWithUs":
-                            return wrapper(
-                                <select
-                                    value={filters.travelWithUs}
-                                    onChange={(e) => setFilters((prev) => ({ ...prev, travelWithUs: e.target.value }))}
-                                    className="border px-3 py-2 rounded-md shadow-sm"
-                                >
-                                    <option value="">Travel With Us?</option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                </select>
-                            );
                         case "paymentMethod":
                             return wrapper(
                                 <select
@@ -366,7 +349,6 @@ export default function ParticipantsPage() {
                             <th className="border px-4 py-3">Email</th>
                             <th className="border px-4 py-3">Address</th>
                             <th className="border px-4 py-3">Parish</th>
-                            <th className="border px-4 py-3">Travel</th>
                             <th className="border px-4 py-3">Payment</th>
                             <th className="border px-4 py-3">Prayer Intention</th>
                             <th className="border px-4 py-3">Registered</th>
@@ -375,7 +357,7 @@ export default function ParticipantsPage() {
                     <tbody>
                         {filteredData.length === 0 ? (
                             <tr>
-                                <td colSpan={13} className="border px-4 py-10 text-center text-gray-500">
+                                <td colSpan={12} className="border px-4 py-10 text-center text-gray-500">
                                     No participants found.
                                 </td>
                             </tr>
@@ -391,7 +373,6 @@ export default function ParticipantsPage() {
                                     <td className="border px-4 py-2">{r.emailAddress}</td>
                                     <td className="border px-4 py-2">{r.address || "-"}</td>
                                     <td className="border px-4 py-2">{r.parishName}</td>
-                                    <td className="border px-4 py-2">{r.travelWithUs}</td>
                                     <td className="border px-4 py-2 capitalize">{r.paymentMethod}</td>
                                     <td className="border px-4 py-2">{r.prayerIntention || "-"}</td>
                                     <td className="border px-4 py-2">{new Date(r.createdAt).toLocaleDateString()}</td>

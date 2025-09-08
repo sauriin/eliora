@@ -19,7 +19,7 @@ export default function ElioraRegistration() {
         emailAddress: "",
         address: "",
         parishName: "",
-        travelWithUs: "",
+        prayerIntention: "",
     });
     const [errors, setErrors] = useState({});
     const [registering, setIsRegistering] = useState(false);
@@ -43,8 +43,6 @@ export default function ElioraRegistration() {
         if (!formData.emailAddress || !emailRegex.test(formData.emailAddress))
             newErrors.emailAddress = "Enter a valid email address.";
         if (!formData.parishName.trim()) newErrors.parishName = "Parish name is required.";
-        if (!formData.travelWithUs) newErrors.travelWithUs = "Please select an option.";
-
         return newErrors;
     };
 
@@ -66,7 +64,6 @@ export default function ElioraRegistration() {
             }
             setErrors({});
 
-            // 🔹 Insert into Convex
             await createRegistration({
                 fullName: formData.fullName,
                 gender: formData.gender,
@@ -77,12 +74,10 @@ export default function ElioraRegistration() {
                 emailAddress: formData.emailAddress,
                 address: formData.address || undefined,
                 parishName: formData.parishName,
-                travelWithUs: formData.travelWithUs,
                 paymentMethod,
                 prayerIntention: formData.prayerIntention || undefined,
             });
 
-            // 🔹 Redirect to success page with data as query params
             nav.push(
                 `/register-success?fullName=${encodeURIComponent(
                     formData.fullName
@@ -95,6 +90,7 @@ export default function ElioraRegistration() {
             setIsRegistering(false);
         }
     };
+
     return (
         <div className="min-h-screen bg-white font-poppins">
             {/* Hero Banner */}
@@ -130,43 +126,21 @@ export default function ElioraRegistration() {
                         </h1>
                         <div className="text-gray-600 mt-2 text-base leading-relaxed space-y-2">
                             <p>
-                                {
-                                    '"Your word is a lamp to my feet and light to my path. - Psalm 119:105"'
-                                }
+                                {"\"Your word is a lamp to my feet and light to my path. - Psalm 119:105\""}
                             </p>
                             <p>
                                 Eliora 2025 - An Initial Retreat for the Diocese of Vadodara.
                                 Return to where you belong, in God&apos;s love!
                             </p>
                             <div className="space-y-1">
+                                <p><strong>Dates:</strong> 24 - 26 Oct, 2025</p>
+                                <p><strong>Venue:</strong> Netrang</p>
+                                <p><strong>Language:</strong> English</p>
+                                <p><strong>Age group:</strong> 16-30 years</p>
                                 <p>
-                                    <strong>Dates:</strong> 24 - 26 Oct, 2025
-                                </p>
-                                <p>
-                                    <strong>Venue:</strong> Netrang
-                                </p>
-                                <p>
-                                    <strong>Language:</strong> English
-                                </p>
-                                <p>
-                                    <strong>Age group:</strong> 16-30 years
-                                </p>
-                                <p>
-                                    <strong>Registration Fee:</strong> ₹1000/- (Includes travel to
-                                    and fro the venue)
+                                    <strong>Registration Fee:</strong> ₹1000/- (Includes travel to and fro the venue)
                                 </p>
                             </div>
-                        </div>
-
-                        {/* Transport info (your requested wording/placement) */}
-                        <div className="mt-4 text-gray-600 text-base leading-relaxed">
-                            <p>
-                                Transport facility will be provided for participants from
-                                Vadodara. The bus will depart on{" "}
-                                <strong>23rd October evening</strong>. Participants coming from
-                                outside Vadodara will need to arrange their own travel but must
-                                also reach the venue by <strong>23rd October evening</strong>.
-                            </p>
                         </div>
 
                         {/* Coordinators */}
@@ -207,9 +181,7 @@ export default function ElioraRegistration() {
                                 onChange={(e) => handleInputChange("fullName", e.target.value)}
                                 className="flex h-12 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
-                            {errors.fullName && (
-                                <p className="text-red-500 text-sm">{errors.fullName}</p>
-                            )}
+                            {errors.fullName && <p className="text-red-500 text-sm">{errors.fullName}</p>}
                         </div>
 
                         {/* Gender */}
@@ -224,15 +196,11 @@ export default function ElioraRegistration() {
                                 onChange={(e) => handleInputChange("gender", e.target.value)}
                                 className="flex h-12 w-full items-center justify-between whitespace-nowrap rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
-                                <option value="" disabled>
-                                    Select your gender
-                                </option>
+                                <option value="" disabled>Select your gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                             </select>
-                            {errors.gender && (
-                                <p className="text-red-500 text-sm">{errors.gender}</p>
-                            )}
+                            {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
                         </div>
 
                         {/* Life Status */}
@@ -247,16 +215,12 @@ export default function ElioraRegistration() {
                                 onChange={(e) => handleInputChange("lifeStatus", e.target.value)}
                                 className="flex h-12 w-full items-center justify-between whitespace-nowrap rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
-                                <option value="" disabled>
-                                    Select an option
-                                </option>
+                                <option value="" disabled>Select an option</option>
                                 <option value="Study">Study</option>
                                 <option value="Job">Job</option>
                                 <option value="Other">Other</option>
                             </select>
-                            {errors.lifeStatus && (
-                                <p className="text-red-500 text-sm">{errors.lifeStatus}</p>
-                            )}
+                            {errors.lifeStatus && <p className="text-red-500 text-sm">{errors.lifeStatus}</p>}
                         </div>
 
                         {/* Date of Birth */}
@@ -272,9 +236,7 @@ export default function ElioraRegistration() {
                                 onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
                                 className="flex h-12 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
-                            {errors.dateOfBirth && (
-                                <p className="text-red-500 text-sm">{errors.dateOfBirth}</p>
-                            )}
+                            {errors.dateOfBirth && <p className="text-red-500 text-sm">{errors.dateOfBirth}</p>}
                         </div>
 
                         {/* WhatsApp Number */}
@@ -288,17 +250,13 @@ export default function ElioraRegistration() {
                                 required
                                 placeholder="e.g. 9876543210"
                                 value={formData.whatsappNumber}
-                                onChange={(e) =>
-                                    handleInputChange("whatsappNumber", e.target.value)
-                                }
+                                onChange={(e) => handleInputChange("whatsappNumber", e.target.value)}
                                 className="flex h-12 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
-                            {errors.whatsappNumber && (
-                                <p className="text-red-500 text-sm">{errors.whatsappNumber}</p>
-                            )}
+                            {errors.whatsappNumber && <p className="text-red-500 text-sm">{errors.whatsappNumber}</p>}
                         </div>
 
-                        {/* Emergency Contact (single field; parsed on submit) */}
+                        {/* Emergency Contact */}
                         <div className="space-y-2">
                             <label htmlFor="emergencyContact" className="text-sm font-medium text-gray-900">
                                 Emergency Contact Name and Number<span className="text-red-500 ml-1">*</span>
@@ -309,17 +267,13 @@ export default function ElioraRegistration() {
                                 required
                                 placeholder="e.g. ABCDE, 9876543210"
                                 value={formData.emergencyContact}
-                                onChange={(e) =>
-                                    handleInputChange("emergencyContact", e.target.value)
-                                }
+                                onChange={(e) => handleInputChange("emergencyContact", e.target.value)}
                                 className="flex h-12 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
-                            {errors.emergencyContact && (
-                                <p className="text-red-500 text-sm">{errors.emergencyContact}</p>
-                            )}
+                            {errors.emergencyContact && <p className="text-red-500 text-sm">{errors.emergencyContact}</p>}
                         </div>
 
-                        {/* Email Address */}
+                        {/* Email */}
                         <div className="space-y-2">
                             <label htmlFor="emailAddress" className="text-sm font-medium text-gray-900">
                                 Email Address<span className="text-red-500 ml-1">*</span>
@@ -330,14 +284,10 @@ export default function ElioraRegistration() {
                                 required
                                 placeholder="Enter your email address"
                                 value={formData.emailAddress}
-                                onChange={(e) =>
-                                    handleInputChange("emailAddress", e.target.value)
-                                }
+                                onChange={(e) => handleInputChange("emailAddress", e.target.value)}
                                 className="flex h-12 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
-                            {errors.emailAddress && (
-                                <p className="text-red-500 text-sm">{errors.emailAddress}</p>
-                            )}
+                            {errors.emailAddress && <p className="text-red-500 text-sm">{errors.emailAddress}</p>}
                         </div>
 
                         {/* Address */}
@@ -369,32 +319,7 @@ export default function ElioraRegistration() {
                                 onChange={(e) => handleInputChange("parishName", e.target.value)}
                                 className="flex h-12 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
-                            {errors.parishName && (
-                                <p className="text-red-500 text-sm">{errors.parishName}</p>
-                            )}
-                        </div>
-
-                        {/* Travel With Us */}
-                        <div className="space-y-2">
-                            <label htmlFor="travelWithUs" className="text-sm font-medium text-gray-900">
-                                Will you travel with us?<span className="text-red-500 ml-1">*</span>
-                            </label>
-                            <select
-                                id="travelWithUs"
-                                required
-                                value={formData.travelWithUs}
-                                onChange={(e) => handleInputChange("travelWithUs", e.target.value)}
-                                className="flex h-12 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            >
-                                <option value="" disabled>
-                                    Select an option
-                                </option>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                            </select>
-                            {errors.travelWithUs && (
-                                <p className="text-red-500 text-sm">{errors.travelWithUs}</p>
-                            )}
+                            {errors.parishName && <p className="text-red-500 text-sm">{errors.parishName}</p>}
                         </div>
 
                         {/* Payment Method */}
@@ -402,9 +327,7 @@ export default function ElioraRegistration() {
                             <label className="text-sm font-medium text-gray-900">
                                 Payment Method<span className="text-red-500 ml-1">*</span>
                             </label>
-                            <p className="text-sm text-gray-600">
-                                Please select your preferred payment method.
-                            </p>
+                            <p className="text-sm text-gray-600">Please select your preferred payment method.</p>
                             <div className="space-y-2">
                                 <div className="flex items-center space-x-2 p-3 rounded-md hover:bg-gray-50 transition-colors">
                                     <input
@@ -416,10 +339,7 @@ export default function ElioraRegistration() {
                                         onChange={(e) => setPaymentMethod(e.target.value)}
                                         className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
                                     />
-                                    <label
-                                        htmlFor="cash"
-                                        className="cursor-pointer text-sm font-medium text-gray-900"
-                                    >
+                                    <label htmlFor="cash" className="cursor-pointer text-sm font-medium text-gray-900">
                                         Cash payment at venue
                                     </label>
                                 </div>
@@ -433,17 +353,14 @@ export default function ElioraRegistration() {
                                         onChange={(e) => setPaymentMethod(e.target.value)}
                                         className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
                                     />
-                                    <label
-                                        htmlFor="online"
-                                        className="cursor-pointer text-sm font-medium text-gray-900"
-                                    >
+                                    <label htmlFor="online" className="cursor-pointer text-sm font-medium text-gray-900">
                                         Online payment (UPI)
                                     </label>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Online Payment QR only */}
+                        {/* Online Payment QR */}
                         {paymentMethod === "online" && (
                             <div className="space-y-4 border-l-4 border-blue-500 pl-4 py-2 animate-in slide-in-from-left duration-300">
                                 <p className="text-sm font-medium text-gray-900 mb-2">
@@ -457,9 +374,8 @@ export default function ElioraRegistration() {
                             </div>
                         )}
 
-                        {submitError && (
-                            <div className="text-red-600 text-sm">{submitError}</div>
-                        )}
+                        {submitError && <div className="text-red-600 text-sm">{submitError}</div>}
+
                         {/* Prayer Intention */}
                         <div className="space-y-2">
                             <label htmlFor="prayerIntention" className="text-sm font-medium text-gray-900">
@@ -479,50 +395,22 @@ export default function ElioraRegistration() {
                             <button
                                 type="submit"
                                 disabled={registering}
-                                className={`inline-flex items-center justify-center h-12 px-8 rounded-full text-base font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ${registering
-                                    ? "bg-orange-400 cursor-not-allowed"
-                                    : "bg-orange-500 hover:bg-orange-600"
+                                className={`inline-flex items-center justify-center h-12 px-8 rounded-full text-base font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ${registering ? "bg-orange-400 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"
                                     }`}
                             >
                                 {registering ? (
                                     <>
-                                        <svg
-                                            className="animate-spin h-5 w-5 mr-2 text-white"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <circle
-                                                className="opacity-25"
-                                                cx="12"
-                                                cy="12"
-                                                r="10"
-                                                stroke="currentColor"
-                                                strokeWidth="4"
-                                            ></circle>
-                                            <path
-                                                className="opacity-75"
-                                                fill="currentColor"
-                                                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                                            ></path>
+                                        <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
                                         </svg>
                                         Registering...
                                     </>
                                 ) : (
                                     <>
                                         Register for Eliora!
-                                        <svg
-                                            className="ml-2 h-5 w-5"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M9 5l7 7-7 7"
-                                            />
+                                        <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                         </svg>
                                     </>
                                 )}
