@@ -138,7 +138,7 @@ export default function ElioraRegistration() {
                                 <p><strong>Language:</strong> English</p>
                                 <p><strong>Age group:</strong> 16-30 years</p>
                                 <p>
-                                    <strong>Registration Fee:</strong> ₹1000/- (Includes travel to and fro the venue)
+                                    <strong>Registration Fee:</strong> ₹1000/- (Includes food and accommodation)
                                 </p>
                             </div>
                         </div>
