@@ -8,7 +8,7 @@ import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
 export default function ElioraRegistration() {
-    const [paymentMethod, setPaymentMethod] = useState("");
+    const [paymentMethod, setPaymentMethod] = useState("online"); // only online
     const [formData, setFormData] = useState({
         fullName: "",
         gender: "",
@@ -34,11 +34,16 @@ export default function ElioraRegistration() {
         if (!formData.gender) newErrors.gender = "Please select your gender.";
         if (!formData.lifeStatus) newErrors.lifeStatus = "Please select your current status.";
         if (!formData.dateOfBirth) newErrors.dateOfBirth = "Date of Birth is required.";
+
         const phoneRegex = /^[0-9]{10}$/;
         if (!formData.whatsappNumber || !phoneRegex.test(formData.whatsappNumber))
             newErrors.whatsappNumber = "Enter a valid 10-digit WhatsApp number.";
+
         if (!formData.emergencyContact.trim())
             newErrors.emergencyContact = "Emergency contact is required.";
+        else if (formData.whatsappNumber === formData.emergencyContact)
+            newErrors.emergencyContact = "Emergency contact cannot be the same as WhatsApp number"; // ✅ Validation
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!formData.emailAddress || !emailRegex.test(formData.emailAddress))
             newErrors.emailAddress = "Enter a valid email address.";
@@ -74,7 +79,7 @@ export default function ElioraRegistration() {
                 emailAddress: formData.emailAddress,
                 address: formData.address || undefined,
                 parishName: formData.parishName,
-                paymentMethod,
+                paymentMethod, // only online
                 prayerIntention: formData.prayerIntention || undefined,
             });
 
@@ -130,7 +135,7 @@ export default function ElioraRegistration() {
                             </p>
                             <p>
                                 Eliora 2025 - An Initial Retreat for the Diocese of Vadodara.
-                                Return to where you belong, in God&apos;s love!
+                                Return to where you belong, in God's love!
                             </p>
                             <div className="space-y-1">
                                 <p><strong>Dates:</strong> 24 - 26 Oct, 2025</p>
@@ -327,22 +332,8 @@ export default function ElioraRegistration() {
                             <label className="text-sm font-medium text-gray-900">
                                 Payment Method<span className="text-red-500 ml-1">*</span>
                             </label>
-                            <p className="text-sm text-gray-600">Please select your preferred payment method.</p>
+                            <p className="text-sm text-gray-600">Please pay online via UPI.</p>
                             <div className="space-y-2">
-                                <div className="flex items-center space-x-2 p-3 rounded-md hover:bg-gray-50 transition-colors">
-                                    <input
-                                        type="radio"
-                                        id="cash"
-                                        name="paymentMethod"
-                                        value="cash"
-                                        checked={paymentMethod === "cash"}
-                                        onChange={(e) => setPaymentMethod(e.target.value)}
-                                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                                    />
-                                    <label htmlFor="cash" className="cursor-pointer text-sm font-medium text-gray-900">
-                                        Cash payment at venue
-                                    </label>
-                                </div>
                                 <div className="flex items-center space-x-2 p-3 rounded-md hover:bg-gray-50 transition-colors">
                                     <input
                                         type="radio"
