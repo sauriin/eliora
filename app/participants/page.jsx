@@ -135,7 +135,7 @@ export default function ParticipantsPage() {
                         onClick={handleLogin}
                         className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold px-4 py-3 rounded-lg shadow-md hover:from-indigo-700 hover:to-purple-700 transition transform hover:scale-[1.02]"
                     >
-                        Unlock Dashboard
+                        Unlock
                     </button>
                 </div>
             </div>

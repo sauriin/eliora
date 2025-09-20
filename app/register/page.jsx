@@ -8,7 +8,7 @@ import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
 export default function ElioraRegistration() {
-    const [paymentMethod, setPaymentMethod] = useState("cash");
+    const [paymentMethod, setPaymentMethod] = useState("");
     const [formData, setFormData] = useState({
         fullName: "",
         gender: "",
