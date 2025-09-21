@@ -1,6 +1,7 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
+// Create a new registration with optional payment proof
 export const create = mutation({
   args: {
     fullName: v.string(),
@@ -14,26 +15,41 @@ export const create = mutation({
     parishName: v.string(),
     paymentMethod: v.string(),
     prayerIntention: v.optional(v.string()),
+    paymentProof: v.optional(v.id("_storage")), // file reference
+    comment: v.optional(v.string()), // ✅ Added
   },
   handler: async (ctx, args) => {
-    const result = await ctx.db.insert("registrations", {
+    return await ctx.db.insert("registrations", {
       ...args,
       createdAt: Date.now(),
     });
-    return result._id;
   },
 });
 
+// Get a single registration
 export const getRegistration = query({
-  args: { registrationId: v.string() },
+  args: { registrationId: v.id("registrations") },
   handler: async (ctx, { registrationId }) => {
-    const registration = await ctx.db.get(`registrations/${registrationId}`);
-    return registration || null;
+    return await ctx.db.get(registrationId);
   },
 });
 
+// List all registrations (newest first)
 export const listAll = query({
   handler: async (ctx) => {
     return await ctx.db.query("registrations").order("desc").collect();
+  },
+});
+
+// Generate a signed upload URL (frontend will POST file to this URL)
+export const generateUploadUrl = mutation(async (ctx) => {
+  return await ctx.storage.generateUploadUrl();
+});
+
+// Get a temporary URL to serve a stored file
+export const getFileUrl = query({
+  args: { storageId: v.id("_storage") },
+  handler: async (ctx, { storageId }) => {
+    return await ctx.storage.getUrl(storageId);
   },
 });

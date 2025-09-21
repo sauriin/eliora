@@ -14,6 +14,8 @@ export default defineSchema({
     parishName: v.string(),
     paymentMethod: v.string(),
     prayerIntention: v.optional(v.string()),
+    paymentProof: v.optional(v.string()),
+    comment: v.optional(v.string()), // ✅ New field
     createdAt: v.number(),
   }),
 });
