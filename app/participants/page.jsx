@@ -5,7 +5,7 @@ import { useQuery } from "convex/react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { Eye, EyeOff, Lock } from "lucide-react";
-import { api } from "@/convex/_generated/api";
+import { api } from "../../convex/_generated/api";
 
 export default function ParticipantsPage() {
     const [password, setPassword] = useState("");
