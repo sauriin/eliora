@@ -53,3 +53,14 @@ export const getFileUrl = query({
     return await ctx.storage.getUrl(storageId);
   },
 });
+
+export const updateRegistration = mutation({
+  args: {
+    registrationId: v.id("registrations"),
+    parishName: v.string(),
+    comment: v.optional(v.string()),
+  },
+  handler: async (ctx, { registrationId, ...updatedFields }) => {
+    await ctx.db.patch(registrationId, updatedFields);
+  },
+});

@@ -1,7 +1,7 @@
 "use client"
 import { useQuery } from "convex/react"
 import { api } from "../../convex/_generated/api"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowUpDown, Eye, EyeOff, Lock } from "lucide-react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
@@ -15,11 +15,22 @@ export default function Page() {
     const [payment, setPayment] = useState("all");
     const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
     const [password, setPassword] = useState("");
-    const [authenticated, setAuthenticated] = useState(true);
+    const [authenticated, setAuthenticated] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const route = useRouter();
 
     const participants = useQuery(api.registration.listAll);
+
+    useEffect(() => {
+        const auth = window.localStorage.getItem("authenticated");
+        const authTime = window.localStorage.getItem("authTime");
+        if (auth && authTime && Date.now() < parseInt(authTime)) {
+            setAuthenticated(true);
+        } else {
+            window.localStorage.removeItem("authenticated");
+            window.localStorage.removeItem("authTime");
+        }
+    }, [])
 
     const handleLogin = async () => {
         try {
@@ -30,7 +41,12 @@ export default function Page() {
             });
 
             const data = await res.json();
-            if (data.success) setAuthenticated(true);
+            if (data.success) {
+                setAuthenticated(true);
+                window.localStorage.setItem("authenticated", "true");
+                const expireTime = Date.now() + 15 * 60 * 1000;
+                window.localStorage.setItem("authTime", expireTime.toString());
+            }
             else alert(data.message || "Incorrect password!");
         } catch (err) {
             console.error("Login error:", err);
@@ -260,7 +276,7 @@ export default function Page() {
                                         '-'}</td>
                                     <td className="px-4 py-3">{new Date(m.createdAt).toLocaleDateString()}</td>
                                     <td>{m.paymentProof && (<FileDisplay storageId={m.paymentProof} />)}</td>
-                                    <td className="px-4 py-3" onClick={() => { route.push('/parts/' + m._id) }}>Edit</td>
+                                    <td className="px-4 py-3 text-blue-500 font-medium cursor-pointer" onClick={() => { route.push('/parts/' + m._id) }}>Edit</td>
                                 </tr>
                             ))}
                         </tbody>
