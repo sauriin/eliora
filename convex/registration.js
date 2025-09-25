@@ -84,7 +84,6 @@ export const fetchPaymentUrl = mutation({
   },
 });
 
-
 export const updateRegistration = mutation({
   args: {
     registrationId: v.id("registrations"),
