@@ -4,7 +4,12 @@ import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+<<<<<<< HEAD
 import { api } from "@/convex/_generated/api";
+=======
+import { Eye, EyeOff, Lock } from "lucide-react";
+import { api } from "../../convex/_generated/api";
+>>>>>>> f4b5bbc34c516fbaeda3f7cf84c69f09f8b265ea
 
 export default function ParticipantsPage() {
     const registrations = useQuery(api.registration.listAll);
