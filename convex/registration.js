@@ -54,7 +54,6 @@ export const getFileUrl = query({
   },
 });
 
-<<<<<<< HEAD
 // Update an existing registration
 export const update = mutation({
   args: {
@@ -78,14 +77,14 @@ export const update = mutation({
   },
 });
 
-// registrations.js
 export const fetchPaymentUrl = mutation({
   args: { storageId: v.id("_storage") },
   handler: async (ctx, { storageId }) => {
     return await ctx.storage.getUrl(storageId);
   },
 });
-=======
+
+
 export const updateRegistration = mutation({
   args: {
     registrationId: v.id("registrations"),
@@ -96,4 +95,3 @@ export const updateRegistration = mutation({
     await ctx.db.patch(registrationId, updatedFields);
   },
 });
->>>>>>> f4b5bbc34c516fbaeda3f7cf84c69f09f8b265ea
