@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import * as XLSX from "xlsx";
-import { saveAs } from "file-saver"; 6
-import { Eye, EyeOff, Lock } from "lucide-react";
+import { saveAs } from "file-saver";
 import { api } from "../../convex/_generated/api";
 
 export default function ParticipantsPage() {
@@ -20,6 +19,7 @@ export default function ParticipantsPage() {
 
     const [editingRowId, setEditingRowId] = useState(null);
     const [editingData, setEditingData] = useState({});
+    const [downloadingExcel, setDownloadingExcel] = useState(false)
 
     if (!registrations) {
         return (
@@ -30,6 +30,7 @@ export default function ParticipantsPage() {
     }
 
     // Apply filters
+    console.log(registrations)
     let filteredData = registrations;
     if (filters.search) {
         filteredData = filteredData.filter(
@@ -42,13 +43,63 @@ export default function ParticipantsPage() {
     if (filters.paymentMethod)
         filteredData = filteredData.filter((r) => r.paymentMethod === filters.paymentMethod);
 
-    // Excel export
-    const downloadExcel = () => {
-        const worksheet = XLSX.utils.json_to_sheet(filteredData);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Participants");
-        const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-        saveAs(new Blob([excelBuffer], { type: "application/octet-stream" }), "participants.xlsx");
+    const downloadExcel = async () => {
+        try {
+            setDownloadingExcel(true)
+            const selectedFields = await Promise.all(
+                filteredData.map(async (item) => {
+                    let paymentUrl = "";
+                    if (item.paymentProof) {
+                        try {
+                            paymentUrl = await fetchPaymentUrl({ storageId: item.paymentProof });
+                        } catch (e) {
+                            console.error("Error fetching payment proof:", e);
+                        }
+                    }
+
+                    return {
+                        Name: item.fullName,
+                        Gender: item.gender,
+                        "Life Status": item.lifeStatus,
+                        DOB: item.dateOfBirth,
+                        WhatsApp: item.whatsappNumber,
+                        "Emergency Contact": item.emergencyContact,
+                        Email: item.emailAddress,
+                        Address: item.address,
+                        Parish: item.parishName,
+                        Payment: item.paymentMethod,
+                        Comment: item.comment || "",
+                        "Prayer Intention": item.prayerIntention,
+                        "Registered Date": new Date(item.createdAt).toLocaleString(),
+                        "Payment Proof": paymentUrl || "Not done or check comment",
+                    };
+                })
+            );
+
+            const worksheet = XLSX.utils.json_to_sheet(selectedFields);
+            
+            const range = XLSX.utils.decode_range(worksheet["!ref"]);
+            for (let row = range.s.r + 1; row <= range.e.r; row++) {
+                const cellRef = XLSX.utils.encode_cell({ r: row, c: 13 }); // Payment Proof = 14th column (0-indexed)
+                const cell = worksheet[cellRef];
+                if (cell && cell.v && cell.v.startsWith("http")) {
+                    worksheet[cellRef] = {
+                        t: "s",
+                        v: "Open Image",
+                        l: { Target: cell.v, Tooltip: "Click to view payment proof" }
+                    };
+                }
+            }
+
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Participants");
+
+            const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+            saveAs(new Blob([excelBuffer], { type: "application/octet-stream" }), "participants.xlsx");
+        }
+        finally {
+            setDownloadingExcel(false)
+        }
     };
 
     const handleEditChange = (field, value) => {
@@ -130,9 +181,9 @@ export default function ParticipantsPage() {
                 <span className="text-sm font-medium">{filteredData.length} records</span>
                 <button
                     onClick={downloadExcel}
-                    className="ml-auto bg-blue-600 text-white px-4 py-2 rounded text-sm"
+                    className="ml-auto bg-blue-600 text-white px-4 py-2 rounded text-sm cursor-pointer"
                 >
-                    Export to Excel
+                    {downloadingExcel ? <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : "Export to Excel"}
                 </button>
             </div>
 
