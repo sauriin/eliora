@@ -32,7 +32,7 @@ export default function ElioraRegistration() {
     const generateUploadUrl = useMutation(api.registration.generateUploadUrl);
 
     const registrationDeadline = new Date("2025-10-20T12:00:00+05:30");
-    const isRegistrationClosed = true;
+    const isRegistrationClosed = new Date() > registrationDeadline;
 
     const validateForm = () => {
         const newErrors = {};
